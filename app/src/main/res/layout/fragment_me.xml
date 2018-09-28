@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mSwipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/ic_info_bg"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/tv_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shape_corner_sign"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="签到"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+
+                    <com.google.soul.widget.CircleImageView
+                        android:id="@+id/ci_pic"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:elevation="3dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:translationZ="5dp"
+                        app:civ_border_color="@color/colorWhite"
+                        app:civ_border_width="1dp"
+                        app:civ_fill_color="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:maxLines="2"
+                        android:text="Soul"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:singleLine="true"
+                    android:textColor="@color/colorWhite" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.soul.widget.TabItemLayout
+                    android:id="@+id/tl_movie"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tab_image="@mipmap/ic_movie"
+                    app:tab_text="豆瓣电影" />
+
+                <com.google.soul.widget.TabItemLayout
+                    android:id="@+id/tl_racing_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tab_image="@mipmap/ic_racing_car"
+                    app:tab_text="PK10赚积分" />
+
+                <com.google.soul.widget.TabItemLayout
+                    android:id="@+id/tl_skin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tab_image="@mipmap/ic_theme"
+                    app:tab_text="主题设置" />
+
+                <com.google.soul.widget.TabItemLayout
+                    android:id="@+id/tl_exit_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tab_image="@mipmap/ic_exit"
+                    app:tab_text="退出登录" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.v4.widget.SwipeRefreshLayout>
