@@ -2,11 +2,11 @@ package com.google.soul.adapter
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.widget.ImageView
 import cn.jpush.im.android.api.callback.GetAvatarBitmapCallback
 import com.google.soul.R
 import com.google.soul.base.BaseAdapter
 import com.google.soul.mvp.model.UserInfoByLetterEntity
-import com.google.soul.widget.CircleImageView
 
 /**************************
  *作者：FYX
@@ -20,9 +20,9 @@ class FriendsListAdapter(val context: Context, val bean: ArrayList<UserInfoByLet
         data.userInfo.getAvatarBitmap(object : GetAvatarBitmapCallback() {
             override fun gotResult(p0: Int, p1: String?, p2: Bitmap?) {
                 if (p2 == null) {
-                    holder.getView<CircleImageView>(R.id.ci_avatar).setImageResource(R.mipmap.ic_launcher)
+                    holder.getView<ImageView>(R.id.iv_avatar).setImageResource(R.mipmap.ic_launcher)
                 } else {
-                    holder.getView<CircleImageView>(R.id.ci_avatar).setImageBitmap(p2)
+                    holder.getView<ImageView>(R.id.iv_avatar).setImageBitmap(p2)
                 }
             }
         })
