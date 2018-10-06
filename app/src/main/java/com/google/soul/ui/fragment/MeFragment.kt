@@ -6,6 +6,8 @@ import android.animation.ObjectAnimator
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import cn.jpush.im.android.api.JMessageClient
 import cn.jpush.im.android.api.callback.GetAvatarBitmapCallback
 import cn.jpush.im.android.api.model.UserInfo
@@ -61,6 +63,12 @@ class MeFragment : BaseFragment() {
                 this.getExtra("last_sign_time").let {
                     if (it.isNullOrEmpty() || !AppUtil.isToday(it.toLong())) {
                         tv_sign.visibility = View.VISIBLE
+                        ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f).let {
+                            it.duration = 750
+                            it.repeatMode = Animation.REVERSE
+                            it.repeatCount = Animation.INFINITE
+                            tv_sign.startAnimation(it)
+                        }
                     } else {
                         tv_sign.visibility = View.INVISIBLE
                     }
