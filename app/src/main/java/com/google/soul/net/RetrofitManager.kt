@@ -7,10 +7,14 @@ import io.reactivex.ObservableTransformer
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.nio.charset.Charset
+import java.util.HashMap
+import java.util.concurrent.TimeUnit
 
 /**************************
 作者：FYX
@@ -28,14 +32,34 @@ object RetrofitManager {
 
     private val okHttpClient = OkHttpClient().newBuilder().addInterceptor { chain ->
         val request = chain.request()
+        val paramMap = HashMap<String, Any>()
+        val requestBody = request.body()
+        if (requestBody is FormBody) {
+            for (i in 0 until requestBody.size()) {
+                paramMap[requestBody.encodedName(i)] = requestBody.encodedValue(i)
+            }
+        }
+
         val time1 = System.currentTimeMillis()
-        val response = chain.proceed(request)//用来返回的response,如果打印了返回回去没数据
-        val responseLog = chain.proceed(request)
+        val response = chain.proceed(request)
+        val responseBody = response.body()
+        val responseContentLength = responseBody?.contentLength()
+        val buffer = (responseBody?.source().apply { this?.request(Long.MAX_VALUE) })?.buffer()
+        var charset = Charset.forName("UTF-8")
+        val contentType = responseBody?.contentType()
+        charset = contentType?.charset(charset)
         val time2 = System.currentTimeMillis()
-        Logger.e("发送请求: \n" + request.url() + "\n请求耗时: \n" + (time2 - time1) + "ms")
-        Logger.json(responseLog.body()?.string())
+
+        Logger.e("${request.url()}\n请求参数:$paramMap\n请求耗时:${(time2 - time1)}ms")
+        if (responseContentLength != 0L) {
+            Logger.json(buffer?.clone()?.readString(charset))
+        }
         response
-    }.build()
+    }
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(20, TimeUnit.SECONDS)
+            .writeTimeout(20, TimeUnit.SECONDS)
+            .build()
 
     /**
      * 获取豆瓣Service对象

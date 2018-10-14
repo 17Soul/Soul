@@ -152,8 +152,7 @@ class RacingCarsActivity : BaseActivity(), View.OnClickListener {
 
     private fun updateMoney(size: Int) {
         money += size
-        tv_money.setDuration(2000)
-        tv_money.setNumberString(tv_money.text.toString(), money.toString())
+        tv_money.text = money.toString()
     }
 
     override fun onDestroy() {
