@@ -13,8 +13,15 @@ import com.google.soul.ui.fragment.MeFragment
 import com.google.soul.ui.fragment.FriendsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import cn.jpush.im.android.api.event.LoginStateChangeEvent
+import android.view.LayoutInflater
+import android.support.design.internal.BottomNavigationItemView
+import android.support.design.internal.BottomNavigationMenuView
+import android.view.View
+import android.widget.TextView
 
 class MainActivity : BaseActivity() {
+
+    var badgeView: TextView? = null
 
     override fun layoutId(): Int = R.layout.activity_main
 
@@ -51,6 +58,31 @@ class MainActivity : BaseActivity() {
                 mBottomNavigationView.menu.getItem(position).isChecked = true
             }
         })
+        initMsgCount()
+    }
+
+    private fun initMsgCount() {
+        val menuView = mBottomNavigationView.getChildAt(0) as BottomNavigationMenuView
+        val itemView = menuView.getChildAt(1) as BottomNavigationItemView
+        val view = LayoutInflater.from(mContext).inflate(R.layout.badge, menuView, false)
+        itemView.addView(view)
+        badgeView = view.findViewById(R.id.tv_msg_count) as TextView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val count = JMessageClient.getAllUnReadMsgCount()
+        if (count > 0) {
+            badgeView?.visibility = View.VISIBLE
+            if (count > 99) {
+                badgeView?.text = "99+"
+            } else {
+                badgeView?.text = count.toString()
+            }
+        } else {
+            badgeView?.visibility = View.GONE
+            badgeView?.text = "0"
+        }
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

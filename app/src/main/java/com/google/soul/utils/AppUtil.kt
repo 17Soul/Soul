@@ -1,6 +1,9 @@
 package com.google.soul.utils
 
+import android.content.Context
+import android.graphics.PointF
 import android.text.TextUtils
+import android.view.WindowManager
 import com.google.soul.App
 import com.google.soul.R
 import java.text.SimpleDateFormat
@@ -133,5 +136,108 @@ object AppUtil {
             } else letter
         }
         return defaultLetter
+    }
+
+    /**
+     * 二阶贝塞尔曲线
+     * B(t) = Po*(1-t)^2 + 2*p1*t*(1-t)+t^2*p2
+     *
+     * @param t  曲线长度比例
+     * @param p0 起始点
+     * @param p1 控制点
+     * @param p2 终止点
+     * @return t对应的点
+     */
+    fun CalculateBezierPointForQuadratic(t: Float, p0: PointF, p1: PointF, p2: PointF): PointF {
+        val point = PointF()
+        val temp = 1 - t
+        //      point.x = temp * temp * p0.x + 2 * t * temp * p1.x + t * t * p2.x;
+        //      point.y = temp * temp * p0.y + 2 * t * temp * p1.y + t * t * p2.y;
+        point.x = (Math.pow(temp.toDouble(), 2.0) * p0.x + (2f * t * temp * p1.x).toDouble() + Math.pow(t.toDouble(), 2.0) * p2.x).toFloat()
+        point.y = (Math.pow(temp.toDouble(), 2.0) * p0.y + (2f * t * temp * p1.y).toDouble() + Math.pow(t.toDouble(), 2.0) * p2.y).toFloat()
+        return point
+    }
+
+    /**
+     * 获取屏幕分辨率
+     * @param context
+     * @return
+     */
+    fun getScreenDispaly(context: Context): IntArray {
+        val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val width = windowManager.defaultDisplay.width// 手机屏幕的宽度
+        val height = windowManager.defaultDisplay.height// 手机屏幕的高度
+        return intArrayOf(width, height)
+    }
+
+    /** 获取屏幕宽度  */
+    fun getDisplayWidth(context: Context?): Int {
+        if (context != null) {
+            val dm = context.resources.displayMetrics
+            // int h_screen = dm.heightPixels;
+            return dm.widthPixels
+        }
+        return 720
+    }
+
+    /** 获取屏幕高度  */
+    fun getDisplayHight(context: Context?): Int {
+        if (context != null) {
+            val dm = context.resources.displayMetrics
+            // int w_screen = dm.widthPixels;
+            return dm.heightPixels
+        }
+        return 1280
+    }
+
+    fun dip2px(context: Context, dipValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dipValue * scale + 0.5f).toInt()
+    }
+
+    fun px2dip(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
+    }
+
+    /**
+     * 获取以前或者以后的时间
+     */
+    fun getBeforeAndAfterTime(format: String, day: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.time = Date(System.currentTimeMillis())
+        calendar.add(Calendar.DAY_OF_MONTH, day)
+        return SimpleDateFormat(format, Locale.CHINA).format(calendar.time)
+    }
+
+    fun getChatTime(unixTimestamp: Long): String {
+        var result = unixTimestampToTime(unixTimestamp, "MM月dd日")
+        val todayCalendar = Calendar.getInstance()
+        val otherCalendar = Calendar.getInstance()
+        otherCalendar.timeInMillis = unixTimestamp
+        if (todayCalendar.get(Calendar.YEAR) == otherCalendar.get(Calendar.YEAR)) {
+            if (todayCalendar.get(Calendar.MONTH) == otherCalendar.get(Calendar.MONTH)) {
+                when (todayCalendar.get(Calendar.DATE) - otherCalendar.get(Calendar.DATE)) {
+                    0 -> result = unixTimestampToTime(unixTimestamp, "HH:mm")
+                    1 -> result = "昨天 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                    2, 3, 4, 5, 6 -> {
+                        if (todayCalendar.get(Calendar.WEEK_OF_MONTH) == otherCalendar.get(Calendar.WEEK_OF_MONTH)) {
+                            when (otherCalendar.get(Calendar.DAY_OF_WEEK)) {
+                                1 -> result = "周日 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                2 -> result = "周一 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                3 -> result = "周二 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                4 -> result = "周三 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                5 -> result = "周四 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                6 -> result = "周五 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                                7 -> result = "周六 ${unixTimestampToTime(unixTimestamp, "HH:mm")}"
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            result = unixTimestampToTime(unixTimestamp, "yyyy年MM月dd日")
+        }
+        return result
     }
 }

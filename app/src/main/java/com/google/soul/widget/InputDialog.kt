@@ -2,6 +2,7 @@ package com.google.soul.widget
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
 import android.text.InputType
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.soul.R
 import kotlinx.android.synthetic.main.dialog_input.*
+import java.lang.IllegalStateException
 
 /**************************
  *作者：FYX
@@ -92,5 +94,21 @@ class InputDialog : DialogFragment() {
 
     interface OnOkClickListener {
         fun onOkClick(string: String)
+    }
+
+    override fun show(manager: FragmentManager?, tag: String?) {
+        try {
+            super.show(manager, tag)
+        } catch (e: IllegalStateException) {
+
+        }
+    }
+
+    override fun dismiss() {
+        try {
+            super.dismiss()
+        } catch (e: IllegalStateException) {
+
+        }
     }
 }

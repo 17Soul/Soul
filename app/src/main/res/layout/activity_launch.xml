@@ -5,25 +5,30 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/launch_background"
+        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY" />
 
+    <com.google.soul.widget.BubbleView
+        android:id="@+id/mBubbleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.google.soul.widget.ShimmerLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
         app:shimmer_auto_start="true"
         app:shimmer_color="?attr/colorPrimary">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="欢迎回来 By Soul"
+            android:text="@string/welcome"
             android:textColor="@color/colorWhite"
-            android:textSize="30sp"
+            android:textSize="23sp"
             android:textStyle="italic|bold" />
 
     </com.google.soul.widget.ShimmerLayout>

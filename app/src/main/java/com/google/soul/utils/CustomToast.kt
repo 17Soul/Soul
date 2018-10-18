@@ -1,6 +1,5 @@
 package com.google.soul.utils
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.Toast
 import com.google.soul.App
@@ -17,7 +16,6 @@ object CustomToast {
 
     init {
         toast.duration = Toast.LENGTH_SHORT
-        toast.setGravity(Gravity.TOP, 0, 100)
     }
 
     fun show(message: String) {
